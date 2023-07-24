@@ -18,7 +18,7 @@
         <input v-model="searchValue" @input="handleSearchChange" />
       </div>
       <div
-        v-for="item in filteredItems"
+        v-for="item in items"
         :key="item"
         class="dropdown__element"
         @click="toggleSelection(item)"
@@ -34,7 +34,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, defineEmits } from 'vue'
-
+import './multiselect.css'
 const props = defineProps({
   value: {
     type: [Object, Array, String, Number, null],
@@ -100,11 +100,10 @@ const props = defineProps({
 
 const showDropdown = ref(false)
 const searchValue = ref('')
-const filteredItems = ref(props.items)
-
+const items = ref(props.items)
 const handleSearchChange = () => {
   emit('search-change')
-  filteredItems.value = props.items.filter((el) =>
+  items.value = props.items.filter((el) =>
     el.toLowerCase().includes(searchValue.value.toLowerCase())
   )
 }
@@ -151,50 +150,4 @@ onUnmounted(() => {
 })
 </script>
 
-<style lang="scss">
-.muttiselect {
-  display: flex;
-  flex-direction: column;
-  max-width: 400px;
-}
-.muttiselect__element {
-  display: flex;
-  border: 1px #3a354199 solid;
-  background-color: #f4f4f4;
-  border-radius: 5px;
-  flex-direction: row;
-  align-items: center;
-  padding: 5px;
-}
-.multiselect__field {
-  display: flex;
-  flex-wrap: wrap;
-}
-.mutliselect__selection {
-  margin-right: 2px;
-}
-.mutliselect__append {
-  width: 20px;
-  margin-left: auto;
-}
-.dropdown {
-  position: absolute;
-  max-height: 80%;
-  overflow-y: auto;
-  border: 1px #3a354199 solid;
-  border-radius: 5px;
-  padding: 5px;
-  background-color: #f4f4f4;
-}
-
-.dropdown__element {
-  display: flex;
-  cursor: pointer;
-}
-.dropdown__element-checkbox {
-  margin-left: 10px;
-}
-.dropdown__element-title {
-  margin-left: 10px;
-}
-</style>
+<style></style>

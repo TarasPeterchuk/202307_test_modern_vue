@@ -1,0 +1,45 @@
+.muttiselect {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+}
+.muttiselect__element {
+  display: flex;
+  border: 1px #3a354199 solid;
+  background-color: #f4f4f4;
+  border-radius: 5px;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px;
+}
+.multiselect__field {
+  display: flex;
+  flex-wrap: wrap;
+}
+.mutliselect__selection {
+  margin-right: 2px;
+}
+.mutliselect__append {
+  width: 20px;
+  margin-left: auto;
+}
+.dropdown {
+  position: absolute;
+  max-height: 80%;
+  overflow-y: auto;
+  border: 1px #3a354199 solid;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #f4f4f4;
+}
+
+.dropdown__element {
+  display: flex;
+  cursor: pointer;
+}
+.dropdown__element-checkbox {
+  margin-left: 10px;
+}
+.dropdown__element-title {
+  margin-left: 10px;
+}
