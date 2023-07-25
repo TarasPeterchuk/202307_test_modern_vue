@@ -60,6 +60,7 @@
 }
 
 .dropdown__element {
+  animation: fadeDown 0.2s;
   display: flex;
   cursor: pointer;
 }

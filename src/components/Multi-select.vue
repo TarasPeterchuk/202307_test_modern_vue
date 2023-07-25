@@ -18,10 +18,11 @@
         <input v-model="searchValue" @input="handleSearchChange" />
       </div>
       <div
-        v-for="item in items"
+        v-for="(item, index) in items"
         :key="item"
         class="dropdown__element"
         @click="toggleSelection(item)"
+        :style="`animation-delay: ${index / 50}s`"
       >
         <div v-if="multiple" class="dropdown__element-checkbox">
           <input type="checkbox" :checked="selectedItems.includes(item)" />
