@@ -34,7 +34,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, defineEmits } from 'vue'
-import './multiselect.css'
+import './multiselect.scss'
 const props = defineProps({
   value: {
     type: [Object, Array, String, Number, null],

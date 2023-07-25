@@ -16,14 +16,39 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .mutliselect__selection {
+  animation: fade 0.2s linear;
   margin-right: 2px;
 }
 .mutliselect__append {
   width: 20px;
   margin-left: auto;
 }
+
+@keyframes fadeDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .dropdown {
+  opacity: 1;
+  animation: fadeDown 0.2s linear;
   position: absolute;
   top: 4rem;
   max-height: 80%;
