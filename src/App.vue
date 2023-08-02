@@ -1,35 +1,55 @@
 <template>
   <div>
     <Multiselect
-      :items="items"
-      :selectedItems="selectedItems"
-      @update:selectedItems="selectedItems = $event"
+      :items="itemsObjects"
+      v-model="value"
+      :tags="true"
       multiple
+      :disabled="false"
       search
       placeholder="select item"
+      :object="true"
+      :hideSelected="false"
+      labelProp="name"
+      label="-label-"
       @select="handleSelect"
       @deselect="handleDeselect"
       @search-change="handleSearchChange"
+      @change="handleChange"
     />
+    <!-- 
+      v-model : 
+        v-model="value"
+      or value:
+        :value="value"
+        @update:modelValue="value = $event"
+     -->
   </div>
-  <!-- @change="handleChange"-->
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import Multiselect from './components/Multi-select.vue'
 
-const items = ['Apple', 'Banana', 'Cherry', 'Durian', 'Grape', 'Kiwi', 'Lemon', 'Mango', 'Orange']
+const itemsArray = [1, '2', 3]
+const itemsObjects = [
+  { id: '1', name: 'Label 1' },
+  { id: '2', name: 'Label 2' },
+  { id: '3', name: 'Label 3' }
+]
 
-const selectedItems = ref(['Cherry'])
+const value = ref(['2'])
 
 const handleSelect = (option) => {
-  console.log('Selected option:', option)
+  console.log(`event select: ${option}`)
 }
 const handleDeselect = (option) => {
-  console.log('Deselectsd option:', option)
+  console.log(`event deselect: ${option}`)
 }
 const handleSearchChange = () => {
-  console.log('Search value changed')
+  console.log('event search-change')
+}
+const handleChange = (newValue, oldValue) => {
+  console.log(`event change: new:${newValue}, old:${oldValue}`)
 }
 </script>

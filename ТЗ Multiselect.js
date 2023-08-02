@@ -10,12 +10,16 @@ value:{
     example:{
         "1",
         {id:"2", name:"Label 2"} //when "object" props = true,
-        "",
+        // "",
+         
+        // when multi :
         [1, "2"],
         [ 
             { id:"1", name:"Label 1"},
             {id:"2", name:"Label 2"},
          ]
+!!!!!!!!!!!!!!!!!!! 
+         
     }
 }
 v-model:{
@@ -24,7 +28,9 @@ v-model:{
     example:{
         "1",
         {id:"2", name:"Label 2"} //when "object" props = true,
-        "",
+        // "",
+
+        // when multi :
         [1, "2"],
         [ 
             { id:"1", name:"Label 1"},
@@ -42,11 +48,11 @@ items: {
             {id:"2", name:"Label 2"},
             { id:"3", name:"Label 3"}
         ],        
-        {
-            value1:"label 1",
-            value2:"label 2",
-            value3:"label 3"
-        }
+        // {
+        //     value1:"label 1",
+        //     value2:"label 2",
+        //     value3:"label 3"
+        // }
     }
        
 }

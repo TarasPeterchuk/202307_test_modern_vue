@@ -1,13 +1,20 @@
 <template>
   <div class="muttiselect">
+    <div v-if="label" class="multiselect__label">{{ label }}</div>
     <div @click.stop="toggleDropdown" class="muttiselect__element">
       <div class="multiselect__field">
         <span v-if="placeholder && !selectedItems.length" class="mutliselect__selection-text">{{
           placeholder
         }}</span>
-        <div v-for="(item, index) in selectedItems" :key="item" class="mutliselect__selection">
+        <div
+          v-for="(item, index) in selectedItems"
+          :key="item"
+          :class="
+            tags ? 'mutliselect__selection mutliselect__selection-tags' : 'mutliselect__selection'
+          "
+        >
           <span class="mutliselect__selection-text"
-            >{{ item }} <span v-if="index < selectedItems.length - 1">,</span></span
+            >{{ item }} <span v-if="!tags && index < selectedItems.length - 1">,</span></span
           >
         </div>
       </div>
@@ -18,26 +25,30 @@
         <input v-model="searchValue" @input="handleSearchChange" />
       </div>
       <div
-        v-for="(item, index) in items"
-        :key="item"
+        v-for="(element, index) in optionElementsSearch"
+        :key="element.label"
         class="dropdown__element"
-        @click="toggleSelection(item)"
+        @click="toggleSelection(element.value)"
         :style="`animation-delay: ${index / 50}s`"
       >
         <div v-if="multiple" class="dropdown__element-checkbox">
-          <input type="checkbox" :checked="selectedItems.includes(item)" />
+          <input type="checkbox" :checked="value.includes(element.value)" />
         </div>
-        <div class="dropdown__element-title">{{ item }}</div>
+        <div class="dropdown__element-title">{{ element.label }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, defineEmits } from 'vue'
+import { ref, watch, onMounted, onUnmounted, defineEmits } from 'vue'
 import './multiselect.scss'
 const props = defineProps({
   value: {
+    type: [Object, Array, String, Number, null],
+    default: null
+  },
+  modelValue: {
     type: [Object, Array, String, Number, null],
     default: null
   },
@@ -92,27 +103,62 @@ const props = defineProps({
   items: {
     type: [Object, Array],
     default: () => ({})
-  },
-  selectedItems: {
-    type: [Object, Array],
-    default: () => ({})
   }
 })
 
+let value = props.modelValue ? props.modelValue : props.value
 const showDropdown = ref(false)
 const searchValue = ref('')
-const items = ref(props.items)
+
+const labels = props.object ? props.items.map((el) => el[props.labelProp]) : props.items
+const values = props.object ? props.items.map((el) => el[props.valueProp]) : props.items
+
+const optionElement = labels
+  .map((el, i) => ({ label: el, value: values[i] }))
+  .filter((el) => (props.hideSelected ? !value.includes(el.value) : true))
+
+const optionElementsSearch = ref(optionElement)
+
+const selectedItemsFunc = (value) =>
+  props.object
+    ? props.items
+        .filter((el) =>
+          props.multiple ? value.includes(el[props.valueProp]) : value === el[props.valueProp]
+        )
+        .map((el) => el[props.labelProp])
+    : labels.filter((el) => (props.multiple ? value.includes(el) : value === el))
+
+const selectedItems = ref(selectedItemsFunc(value))
+
+watch(
+  () => props.value,
+  (newValue) => {
+    value = newValue
+    selectedItems.value = selectedItemsFunc(newValue)
+  }
+)
+
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    value = newValue
+    selectedItems.value = selectedItemsFunc(newValue)
+  }
+)
+
+const emit = defineEmits(['update:modelValue', 'select', 'change', 'search-change', 'deselect'])
+
 const handleSearchChange = () => {
   emit('search-change')
-  items.value = props.items.filter((el) =>
-    el.toLowerCase().includes(searchValue.value.toLowerCase())
+  optionElementsSearch.value = optionElement.filter((el) =>
+    el.label.toLowerCase().includes(searchValue.value.toLowerCase())
   )
 }
 
-const emit = defineEmits(['update:selectedItems', 'select', 'change', 'search-change', 'deselect'])
-
 const toggleDropdown = () => {
-  showDropdown.value = !showDropdown.value
+  if (!props.disabled) {
+    showDropdown.value = !showDropdown.value
+  }
 }
 
 const handleClickOutsideDropdown = (event) => {
@@ -123,24 +169,26 @@ const handleClickOutsideDropdown = (event) => {
 }
 
 const toggleSelection = (item) => {
-  const updatedItems = [...props.selectedItems]
-  const index = props.selectedItems.indexOf(item)
+  let newValue = props.multiple ? [] : null
   if (!props.multiple) {
-    updatedItems.length = 0
-    updatedItems.push(item)
-    emit('update:selectedItems', updatedItems)
+    emit('update:modelValue', item)
+    emit('select', item)
+    emit('change', item, value)
     showDropdown.value = false
-    emit('select', item)
-    return
-  }
-  if (index === -1) {
-    emit('select', item)
-    updatedItems.push(item)
   } else {
-    emit('deselect', item)
-    updatedItems.splice(index, 1)
+    if (!value.includes(item)) {
+      newValue = [...value, item]
+      emit('select', item)
+    } else {
+      newValue = value.filter((el) => el !== item)
+      emit('deselect', item)
+    }
+    emit('update:modelValue', newValue)
+    emit('change', newValue, value)
   }
-  emit('update:selectedItems', updatedItems)
+  // optionElementsSearch.value = optionElement.filter((el) =>
+  //   props.hideSelected ? !value.includes(el.value) : true
+  // )
 }
 
 onMounted(() => {
