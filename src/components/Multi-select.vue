@@ -186,9 +186,6 @@ const toggleSelection = (item) => {
     emit('update:modelValue', newValue)
     emit('change', newValue, value)
   }
-  // optionElementsSearch.value = optionElement.filter((el) =>
-  //   props.hideSelected ? !value.includes(el.value) : true
-  // )
 }
 
 onMounted(() => {
