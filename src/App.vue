@@ -7,7 +7,7 @@
     <Multiselect
       :items="itemsObjects"
       v-model="value"
-      :tags="true"
+      :tags="false"
       multiple
       :disabled="false"
       placeholder="select item"

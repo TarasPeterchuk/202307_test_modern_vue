@@ -6,31 +6,37 @@
           placeholder
         }}</span>
         <!---->
-        <div
-          v-for="item in selectedItems"
-          :key="item"
-          class="mutliselect__chip"
-          @click="
-            (event) => {
-              event.stopPropagation()
-            }
-          "
-        >
-          <span class="mutliselect__chip-text">{{ item.label }} </span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 384 512"
-            @click="toggleSelection(item.value)"
+        <div v-if="tags" class="muttiselect__chips">
+          <div
+            v-for="item in selectedItems"
+            :key="item"
+            class="mutliselect__chip"
+            @click="
+              (event) => {
+                event.stopPropagation()
+              }
+            "
           >
-            <path
-              fill="currentColor"
-              d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7L86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256L41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3l105.4 105.3c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256l105.3-105.4z"
-            />
-          </svg>
+            <span class="mutliselect__chip-text">{{ item.label }} </span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 384 512"
+              @click="toggleSelection(item.value)"
+            >
+              <path
+                fill="currentColor"
+                d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7L86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256L41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3l105.4 105.3c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256l105.3-105.4z"
+              />
+            </svg>
+          </div>
         </div>
-        <span v-if="!tags">{{ selectedItems.reduce((acc, val) => acc + ', ' + val) }}</span>
+        <span v-else>{{
+          selectedItems.length
+            ? selectedItems.reduce((acc, el) => (acc === '' ? el.label : acc + ', ' + el.label), '')
+            : ''
+        }}</span>
         <!---->
       </div>
       <div class="mutliselect__append">
@@ -146,8 +152,6 @@ const searchValue = ref('')
 const labels = props.object ? props.items.map((el) => el[props.labelProp]) : props.items
 const values = props.object ? props.items.map((el) => el[props.valueProp]) : props.items
 const itemsArray = labels.map((el, index) => ({ label: el, value: values[index] }))
-
-console.log(itemsArray)
 
 const optionElements = labels
   .map((el, i) => ({ label: el, value: values[i] }))
