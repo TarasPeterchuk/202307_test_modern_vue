@@ -1,22 +1,18 @@
 .muttiselect {
-  display: flex;
-  flex-direction: column;
-  max-width: 400px;
   position: relative;
+  min-width: 80px;
 }
+
 .muttiselect__element {
   display: flex;
-  border: 1px #3a354199 solid;
-  background-color: #f4f4f4;
-  border-radius: 5px;
-  flex-direction: row;
   align-items: center;
-  padding: 5px;
+  padding: 4px;
+  border: 1px #dddddd solid;
+  border-radius: 5px;
 }
 
 .multiselect__field {
   display: flex;
-  flex-wrap: wrap;
 }
 
 .multiselect__label {
@@ -31,64 +27,55 @@
   border-radius: 2px;
 }
 
-@keyframes fade {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
 .mutliselect__selection {
-  animation: fade 0.2s linear;
   margin-right: 2px;
 }
 
-.mutliselect__selection-tags {
-  border: 1px #b4b3b4 solid;
-  border-radius: 5px;
-  padding: 0 10px;
-  background-color: #b4b3b4;
+.mutliselect__selection-text {
+  color: #d3d3d3;
+}
+
+.mutliselect__chip {
+  display: flex;
+  align-items: center;
+  border-radius: 2px;
+  background-color: #e4f2fd;
+  color: #4ea4cc;
+  margin-right: 5px;
+}
+.mutliselect__chip-text {
+  padding: 0 5px;
+  white-space: nowrap;
 }
 
 .mutliselect__append {
+  display: flex;
   width: 20px;
   margin-left: auto;
+  color: #d3d3d3;
 }
 
-@keyframes fadeDown {
-  0% {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.dropdown {
+.mutliselect__dropdown {
+  width: 100%;
   max-height: 50vh;
-  opacity: 1;
-  animation: fadeDown 0.2s linear;
   position: absolute;
-  top: 2rem;
   overflow-y: auto;
-  border: 1px #3a354199 solid;
+  border: 1px #dddddd solid;
   border-radius: 5px;
-  padding: 5px;
-  background-color: #f4f4f4;
+  color: #828684;
+  :hover {
+    background-color: #f5f5f5;
+  }
 }
 
-.dropdown__element {
-  animation: fadeDown 0.2s linear;
+.mutliselect__dropdown-element {
   display: flex;
   cursor: pointer;
 }
-.dropdown__element-checkbox {
+.mutliselect__dropdown-element-checkbox {
+  accent-color: #029ce2;
   margin-left: 10px;
 }
-.dropdown__element-title {
+.mutliselect__dropdown-element-title {
   margin-left: 10px;
 }

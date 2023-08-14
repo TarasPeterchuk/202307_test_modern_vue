@@ -1,23 +1,27 @@
 <template>
-  <div>
+  <div
+    :style="{
+      width: '400px'
+    }"
+  >
     <Multiselect
       :items="itemsObjects"
       v-model="value"
       :tags="true"
       multiple
       :disabled="false"
-      search
       placeholder="select item"
       :object="true"
       :hideSelected="false"
       labelProp="name"
-      label="-label-"
       @select="handleSelect"
       @deselect="handleDeselect"
       @search-change="handleSearchChange"
       @change="handleChange"
     />
     <!-- 
+      label="-label-"
+      search
       v-model : 
         v-model="value"
       or value:
@@ -29,13 +33,16 @@
 
 <script setup>
 import { ref } from 'vue'
-import Multiselect from './components/Multi-select.vue'
+import Multiselect from './components/MultiSelect.vue'
 
 const itemsArray = [1, '2', 3]
 const itemsObjects = [
   { id: '1', name: 'Label 1' },
   { id: '2', name: 'Label 2' },
-  { id: '3', name: 'Label 3' }
+  { id: '3', name: 'Label 3' },
+  { id: '4', name: 'Label 4' },
+  { id: '5', name: 'Label 5' },
+  { id: '6', name: 'Label 6' }
 ]
 
 const value = ref(['2'])
