@@ -1,9 +1,5 @@
 <template>
-  <div
-    :style="{
-      width: '400px'
-    }"
-  >
+  <div :style="{}">
     <Multiselect
       :items="itemsObjects"
       v-model="value"
@@ -38,11 +34,11 @@ import Multiselect from './components/MultiSelect.vue'
 const itemsArray = [1, '2', 3]
 const itemsObjects = [
   { id: '1', name: 'Label 1' },
-  { id: '2', name: 'Label 2' },
+  { id: '2', name: 'Label 2 some text' },
   { id: '3', name: 'Label 3' },
-  { id: '4', name: 'Label 4' },
-  { id: '5', name: 'Label 5' },
-  { id: '6', name: 'Label 6' }
+  { id: '4', name: 'Label 4 some text' },
+  { id: '5', name: 'Label 5 some text' },
+  { id: '6', name: 'Label 6 some text' }
 ]
 
 const value = ref(['2'])

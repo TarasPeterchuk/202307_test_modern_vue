@@ -8,8 +8,9 @@
         <!---->
         <div v-if="tags" class="muttiselect__chips">
           <div
-            v-for="item in selectedItems"
+            v-for="(item, index) in selectedItems"
             :key="item"
+            :class="{ 'muttiselect__chip_hidden-chip': index >= maxVisibleChips }"
             class="mutliselect__chip"
             @click="
               (event) => {
@@ -19,6 +20,7 @@
           >
             <span class="mutliselect__chip-text">{{ item.label }} </span>
             <svg
+              v-if="props.multiple"
               xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="16"
@@ -31,6 +33,10 @@
               />
             </svg>
           </div>
+          <span v-if="maxVisibleChips < selectedItems.length" class="muttiselect__chips-counter">{{
+            `ще + 
+          ${selectedItems.length - maxVisibleChips}`
+          }}</span>
         </div>
         <span v-else>{{
           selectedItems.length
@@ -80,7 +86,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, onUnmounted, defineEmits } from 'vue'
+import { ref, watch, onMounted, onUnmounted, onUpdated, defineEmits } from 'vue'
 import './multiselect.scss'
 const props = defineProps({
   value: {
@@ -158,18 +164,7 @@ const optionElements = labels
   .filter((el) => (props.hideSelected ? !value.includes(el.value) : true))
 
 const optionElementsSearch = ref(optionElements)
-
-// const selectedItemsFunc = (value) =>
-//   props.object
-//     ? props.items
-//         .filter((el) =>
-//           props.multiple ? value.includes(el[props.valueProp]) : value === el[props.valueProp]
-//         )
-//         .map((el) => el[props.labelProp])
-//     : labels.filter((el) => (props.multiple ? value.includes(el) : value === el))
-
-// const selectedItemsFunc = (value) =>
-//   itemsArray.filter((el) => (props.multiple ? value.includes(el.value) : value === el.value))
+const maxVisibleChips = ref(5)
 
 const selectedItemsFunc = (value) =>
   props.multiple
@@ -180,6 +175,34 @@ const selectedItemsFunc = (value) =>
     : [{ label: itemsArray.find((element) => element.value === value).label, value: value }]
 
 const selectedItems = ref(selectedItemsFunc(value))
+
+const setVisibleChips = () => {
+  const chipsContainer = document.querySelector('.muttiselect__chips')
+  const chipsWidth = chipsContainer.offsetWidth
+  const fieldContainer = document.querySelector('.multiselect__field')
+  const fieldWidth = fieldContainer.offsetWidth
+
+  if (chipsWidth + 50 > fieldWidth && maxVisibleChips.value > 1) {
+    maxVisibleChips.value -= 1
+  } else if (
+    chipsWidth + 220 <= fieldWidth &&
+    selectedItems.value.length >= maxVisibleChips.value
+  ) {
+    maxVisibleChips.value += 1
+  }
+}
+
+const handleWindowResize = () => {
+  if (props.tags) {
+    setVisibleChips()
+  }
+}
+
+onUpdated(() => {
+  if (props.tags) {
+    setVisibleChips()
+  }
+})
 
 watch(
   () => props.value,
@@ -241,9 +264,11 @@ const toggleSelection = (item) => {
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutsideDropdown)
+  window.addEventListener('resize', handleWindowResize)
 })
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutsideDropdown)
+  window.addEventListener('resize', handleWindowResize)
 })
 </script>
 

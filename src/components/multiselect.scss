@@ -13,6 +13,7 @@
 
 .multiselect__field {
   display: flex;
+  width: 100%;
 }
 
 .multiselect__label {
@@ -38,17 +39,29 @@
 .muttiselect__chips {
   display: flex;
 }
+.muttiselect__chips-counter {
+  color: #828684;
+  white-space: nowrap;
+}
 .mutliselect__chip {
   display: flex;
+
   align-items: center;
   border-radius: 2px;
   background-color: #e4f2fd;
   color: #4ea4cc;
   margin-right: 5px;
 }
+.muttiselect__chip_hidden-chip {
+  display: none;
+}
+
 .mutliselect__chip-text {
   padding: 0 5px;
+  max-width: 120px;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mutliselect__append {
